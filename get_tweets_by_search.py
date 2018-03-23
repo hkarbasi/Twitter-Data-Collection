@@ -2,6 +2,7 @@
 
 
 from __future__ import print_function
+import logging
 import getopt
 import json
 import time
@@ -9,12 +10,13 @@ import datetime
 import sys
 import os
 import errno
+
 # third-party: `pip install tweepy`
 try:
     import tweepy
 except ImportError:
-    raise ImportError('tweepy module is not installed on your system!')
-
+    print('Tweepy module is not installed on your system!')
+    sys.exit()
 
 
 def usage():
@@ -122,6 +124,8 @@ def config_reader(filename):
         print(
             'Check your config file!\nMake sure your comments start with #! \nMakse sure your params are not empty!')
         sys.exit()
+    if params['outputFolder'][-1] != '/':
+        params['outputFolder'] += '/'
     return params
 
 
@@ -135,7 +139,7 @@ def main(args):
             if not os.path.isfile(arg):
                 print('Not found or not a file: %s' % arg)
                 usage()
-                
+
         params = config_reader(args[0])
 
         # connect to twitter
@@ -157,6 +161,7 @@ def main(args):
 
 if __name__ == '__main__':
     try:
+        logging.info("Begin")
         main(sys.argv[1:])
     except KeyboardInterrupt:
         print('\nProgram Interrupted!')
