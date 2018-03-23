@@ -1,0 +1,20 @@
+# You should get the following keys from your Twitter account API
+consumerKey =
+consumerSecret =
+twitterAccessToken = 
+twitterAccessTokenSecret =
+
+outputFolder = ./
+
+# It sets the name of the tweet collection
+queryName = Cambridge-Dataset
+
+# This follows Twitter search criteria
+query =  #cambridgeanalytica
+
+# It sets the interval of how often it  collects new tweets (minutes)
+interval = 120
+
+# It sets how many iterations it should collect tweets
+iteration = 10000
+
