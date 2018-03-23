@@ -2,6 +2,7 @@
 
 
 from __future__ import print_function
+import logging
 import getopt
 import json
 import os
@@ -13,7 +14,8 @@ import errno
 try:
     import tweepy
 except ImportError:
-    raise ImportError('tweepy module is not installed on your system!')
+    print('Tweepy module is not installed on your system!')
+    sys.exit()
 
 
 def config_reader(filename):
@@ -36,6 +38,8 @@ def config_reader(filename):
             'queryName' not in params:
         print('Check your config file!\nMake sure your comments start with #! \nMakse sure your params are not empty!')
         sys.exit()
+    if params['outputFolder'][-1] != '/':
+        params['outputFolder'] += '/'
     return params
 
 
@@ -125,6 +129,7 @@ def main(args):
 
 if __name__ == '__main__':
     try:
+        logging.info("Begin")
         main(sys.argv[1:])
     except KeyboardInterrupt:
         print('\nProgram Interrupted!')
