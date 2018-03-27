@@ -69,9 +69,9 @@ def search_tweets(twapi, params):
     temp_since_id = since_id
 
     print('\nNew Tweets')
+    output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
     while iteration > 0:
-        iteration -= 1
-        output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
+        
         try:
             new_tweets = twapi.search(q=query, count=100, since_id=since_id, max_id=str(last_id - 1),
                                       tweet_mode='extended')
@@ -79,9 +79,12 @@ def search_tweets(twapi, params):
                 output.close()
                 if since_id == temp_since_id:
                     os.remove(output.name)
-                print('iteration #' + str(eval(params['iteration']) - iteration) + ' - waiting  ' +
+
+                iteration -= 1
+                print(params['queryName'] + ' - iteration #' + str(eval(params['iteration']) - iteration) + ' - waiting  ' +
                       params['interval'] + ' minutes starting from ' + str(datetime.datetime.now()))
                 time.sleep(interval * 60)
+                output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
                 since_id = temp_since_id
                 last_id = -1
             else:
