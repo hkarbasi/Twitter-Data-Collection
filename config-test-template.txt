@@ -1,8 +1,8 @@
 # You should get the following keys from your Twitter account API
-consumerKey =
-consumerSecret =
-twitterAccessToken = 
-twitterAccessTokenSecret =
+`consumerKey = xxxxxxxx
+consumerSecret = xxxxxxx
+twitterAccessToken = xxxxxxxx
+twitterAccessTokenSecret = xxxxxxxxx
 
 outputFolder = ./
 
