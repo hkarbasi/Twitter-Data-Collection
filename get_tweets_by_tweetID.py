@@ -71,8 +71,8 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
     with open(tweetids_file, 'rU') as idfile:
         now = datetime.datetime.now()
         directory = output_folder + 'JSONs/' + params['queryName'] + '-recollection-'
-        write_to = open(directory + 'JSONs-' + str(now) + '.txt', 'w')
-        exception = open(directory + 'exception-' + str(now) + '.txt', 'w')
+        write_to = open(directory + 'JSONs-' + str(now) + '.txt', 'wb')
+        exception = open(directory + 'exception-' + str(now) + '.txt', 'wb')
         count = 0
 
         for tweet_id in idfile:
