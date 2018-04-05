@@ -1,5 +1,5 @@
 # You should get the following keys from your Twitter account API
-`consumerKey = xxxxxxxx
+consumerKey = xxxxxxxx
 consumerSecret = xxxxxxx
 twitterAccessToken = xxxxxxxx
 twitterAccessTokenSecret = xxxxxxxxx
