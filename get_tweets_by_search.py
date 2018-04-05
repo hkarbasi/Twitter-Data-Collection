@@ -60,7 +60,8 @@ def search_tweets(twapi, params):
                 since_id = max(new_tweets[0].id, since_id)
                 count += 1
         except tweepy.TweepError as e:
-            print(e.message)
+            print (e.api_code)
+            print (getExceptionMessage(e.reason))
             break
 
     last_id = -1
@@ -93,7 +94,8 @@ def search_tweets(twapi, params):
                 count += 1
 
         except tweepy.TweepError as e:
-            print(e.message)
+            print (e.api_code)
+            print (getExceptionMessage(e.reason))
             time.sleep(60)
 
 
