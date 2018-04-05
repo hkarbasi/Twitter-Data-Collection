@@ -44,7 +44,7 @@ def search_tweets(twapi, params):
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
+    output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'wb')
     print(params['queryName'] + '\n\nPast 10 days ago Tweets')
 
     while True:
@@ -70,7 +70,7 @@ def search_tweets(twapi, params):
     temp_since_id = since_id
 
     print('\nNew Tweets')
-    output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
+    output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'wb')
     while iteration > 0:
         
         try:
@@ -85,7 +85,7 @@ def search_tweets(twapi, params):
                 print(params['queryName'] + ' - iteration #' + str(eval(params['iteration']) - iteration) + ' - waiting  ' +
                       params['interval'] + ' minutes starting from ' + str(datetime.datetime.now()))
                 time.sleep(interval * 60)
-                output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
+                output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'wb')
                 since_id = temp_since_id
                 last_id = -1
             else:
