@@ -2,7 +2,7 @@
 The codes for data collection from Twitter API using Tweepy plus dataset creator
 
 
-# 0. Install Python
+# 0. Install Python + Java
 # 1. Install Tweepy
 Mac: pip install tweepy
 
