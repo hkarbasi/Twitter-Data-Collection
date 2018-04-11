@@ -13,7 +13,7 @@ Go to the website: https://apps.twitter.com
   
   Website example: http://yahoo.com
 
-# 3. setup config file
+# 3. Setup config file
 
 # 4. Run Tweet Collector
 Mac: ./get_tweets_by_search.py [config_file]
