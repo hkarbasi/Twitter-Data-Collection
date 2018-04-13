@@ -30,7 +30,7 @@ def config_reader(filename):
                         'Check your config file!\nMake sure your comments start with #! \nMakse sure your params are '
                         'not empty!')
                     sys.exit()
-                params[words[0].lstrip().rstrip()] = words[1].lstrip().rstrip()
+                params[words[0].strip()] = words[1].strip()
     if 'consumerKey' not in params or \
             'consumerSecret' not in params or \
             'twitterAccessToken' not in params or \
