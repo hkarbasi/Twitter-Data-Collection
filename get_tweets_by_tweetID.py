@@ -27,7 +27,8 @@ def config_reader(filename):
 
                 if len(words) < 2:
                     print(
-                        'Check your config file!\nMake sure your comments start with #! \nMakse sure your params are not empty!')
+                        'Check your config file!\nMake sure your comments start with #! \nMakse sure your params are '
+                        'not empty!')
                     sys.exit()
                 params[words[0].lstrip().rstrip()] = words[1].lstrip().rstrip()
     if 'consumerKey' not in params or \
@@ -38,8 +39,8 @@ def config_reader(filename):
             'queryName' not in params:
         print('Check your config file!\nMake sure your comments start with #! \nMakse sure your params are not empty!')
         sys.exit()
-    if params['outputFolder'][-1] != '/':
-        params['outputFolder'] += '/'
+    if params['outputFolder'][-1] == '/' or params['outputFolder'][-1] == '\\':
+        params['outputFolder'] = params['outputFolder'][:-1]
     return params
 
 
@@ -54,8 +55,8 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
     """
     # process IDs from the file
 
-    output_folder = params['outputFolder'] + '/' + params['queryName'] + '/'
-    folders = [output_folder + 'JSONs', output_folder + 'Tweets']
+    output_folder = os.path.join(params['outputFolder'], params['queryName'])
+    folders = [os.path.join(output_folder, 'JSONs'), os.path.join(output_folder, 'Tweets')]
 
     for folder in folders:
         now = datetime.datetime.now()
@@ -63,14 +64,14 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
             os.rename(folder, folder + '-' + str(now))
 
     try:
-        os.makedirs(output_folder + 'JSONs')
+        os.makedirs(folders[0])
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
 
     with open(tweetids_file, 'rU') as idfile:
         now = datetime.datetime.now()
-        directory = output_folder + 'JSONs/' + params['queryName'] + '-recollection-'
+        directory = os.path.join(output_folder, 'JSONs', params['queryName'] + '-recollection-')
         write_to = open(directory + 'JSONs-' + str(now) + '.txt', 'wb')
         exception = open(directory + 'exception-' + str(now) + '.txt', 'wb')
         count = 0
@@ -84,12 +85,12 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
                 write_to.write(json.dumps(tweet._json).replace('"full_text":', '"text":') + '\n')
 
             except tweepy.TweepError as te:
-                if 'message' in te.message[0]:
-                    print('Failed to get tweet ID ', tweet_id.replace('\n', ''), '\t', str(te.message[0]['message']),
-                          te.api_code)
-                    exception.write(tweet_id.replace('\n', '') + '\t' + str(te.message[0]['message']) + '\t' + str(
-                        te.api_code) + '\n')
-                    write_to.flush()
+                print('Failed to recollect tweet ID ', tweet_id.replace('\n', ''), '\t', str(te.args[0][0]['message']),
+                      te.api_code)
+                exception.write(tweet_id.replace('\n', '') + '\t' + str(te.args[0][0]['message']) + '\t' + str(
+                    te.api_code) + '\n')
+                write_to.flush()
+        print(str(count) + ' tweets have been recollected!')
         write_to.close()
         exception.close()
 
