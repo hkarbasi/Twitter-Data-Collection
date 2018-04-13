@@ -9,12 +9,12 @@ import datetime
 import sys
 import os
 import errno
+
 # third-party: `pip install tweepy`
 try:
     import tweepy
 except ImportError:
     raise ImportError('tweepy module is not installed on your system!')
-
 
 
 def usage():
@@ -28,7 +28,7 @@ def search_tweets(twapi, params):
     `params`: Dictionary of all necessary of the parameters
     """
     query = params['query']
-    folder = params['outputFolder'] + params['queryName'] + '/JSONs/'
+    folder = os.path.join(params['outputFolder'], params['queryName'], 'JSONs')
     interval = eval(params['interval'])
     iteration = eval(params['iteration'])
 
@@ -42,8 +42,8 @@ def search_tweets(twapi, params):
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
-    print(params['queryName'] + '\n\nPast 10 days ago Tweets')
+    output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
+    print(params['queryName'] + '\n\nPast 10 days Tweets')
 
     while True:
         try:
@@ -69,16 +69,20 @@ def search_tweets(twapi, params):
     print('\nNew Tweets')
     while iteration > 0:
         iteration -= 1
-        output = open(folder + params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt', 'w')
+        output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
         try:
-            new_tweets = twapi.search(q=query, count=100, since_id=since_id, max_id=str(last_id - 1),
+            new_tweets = twapi.search(q=query,
+                                      count=100,
+                                      since_id=since_id,
+                                      max_id=str(last_id - 1),
                                       tweet_mode='extended')
             if not new_tweets:
                 output.close()
                 if since_id == temp_since_id:
                     os.remove(output.name)
-                print('iteration #' + str(eval(params['iteration']) - iteration) + ' - waiting  ' +
-                      params['interval'] + ' minutes starting from ' + str(datetime.datetime.now()))
+                print(
+                    params['queryName'] + ' - iteration #' + str(eval(params['iteration']) - iteration) + ' - waiting '
+                    + params['interval'] + ' minutes starting from ' + str(datetime.datetime.now()))
                 time.sleep(interval * 60)
                 since_id = temp_since_id
                 last_id = -1
@@ -109,7 +113,7 @@ def config_reader(filename):
                         'Check your config file!\nMake sure your comments start with #! \nMakse sure your params are '
                         'not empty!')
                     sys.exit()
-                params[words[0].lstrip().rstrip()] = words[1].lstrip().rstrip()
+                params[words[0].strip()] = words[1].strip()
     if 'consumerKey' not in params or \
             'consumerSecret' not in params or \
             'twitterAccessToken' not in params or \
@@ -122,6 +126,8 @@ def config_reader(filename):
         print(
             'Check your config file!\nMake sure your comments start with #! \nMakse sure your params are not empty!')
         sys.exit()
+    if params['outputFolder'][-1] == '/' or params['outputFolder'][-1] == '\\':
+        params['outputFolder'] = params['outputFolder'][:-1]
     return params
 
 
@@ -135,7 +141,7 @@ def main(args):
             if not os.path.isfile(arg):
                 print('Not found or not a file: %s' % arg)
                 usage()
-                
+
         params = config_reader(args[0])
 
         # connect to twitter
