@@ -28,7 +28,8 @@ def search_tweets(twapi, params):
     `params`: Dictionary of all necessary of the parameters
     """
     query = params['query']
-    folder = os.path.join(params['outputFolder'], params['queryName'], 'JSONs')
+    # folder = os.path.join(params['outputFolder'], params['queryName'], 'JSONs')
+    folder = '/'.join([params['outputFolder'], params['queryName'], 'JSONs'])
     interval = eval(params['interval'])
     iteration = eval(params['iteration'])
 
@@ -42,7 +43,8 @@ def search_tweets(twapi, params):
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
+    # output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
+    output = open('/'.join([folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt']), 'wb')
     print(params['queryName'] + '\n\nPast 10 days Tweets')
 
     while True:
@@ -69,7 +71,8 @@ def search_tweets(twapi, params):
     print('\nNew Tweets')
     while iteration > 0:
         iteration -= 1
-        output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
+        # output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
+        output = open('/'.join([folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt']), 'wb')
         try:
             new_tweets = twapi.search(q=query,
                                       count=100,
