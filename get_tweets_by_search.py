@@ -129,7 +129,8 @@ def config_reader(filename):
         print(
             'Check your config file!\nMake sure your comments start with #! \nMakse sure your params are not empty!')
         sys.exit()
-    if params['outputFolder'][-1] == '/' or params['outputFolder'][-1] == '\\':
+    params['outputFolder'].replace('\\', '/')
+    if params['outputFolder'][-1] == '/':
         params['outputFolder'] = params['outputFolder'][:-1]
     return params
 
