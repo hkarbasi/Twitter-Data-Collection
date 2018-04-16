@@ -85,13 +85,13 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
                 print(count)
             try:
                 tweet = twapi.get_status(tweet_id, tweet_mode='extended')
-                write_to.write(json.dumps(tweet._json).replace('"full_text":', '"text":') + '\n')
+                write_to.write(json.dumps(tweet._json).replace('"full_text":', '"text":').encode('utf-8') + '\n')
 
             except tweepy.TweepError as te:
                 print('Failed to recollect tweet ID ', tweet_id.replace('\n', ''), '\t', str(te.args[0][0]['message']),
                       te.api_code)
-                exception.write(tweet_id.replace('\n', '') + '\t' + str(te.args[0][0]['message']) + '\t' + str(
-                    te.api_code) + '\n')
+                exception.write(str(tweet_id.replace('\n', '') + '\t' + str(te.args[0][0]['message']) + '\t' + str(
+                    te.api_code) + '\n').encode('utf-8'))
                 write_to.flush()
         print(str(count) + ' tweets have been recollected!')
         write_to.close()
