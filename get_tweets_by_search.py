@@ -44,7 +44,7 @@ def search_tweets(twapi, params):
         if e.errno != errno.EEXIST:
             raise
     # output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
-    output = open('/'.join([folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt']), 'wb')
+    output = open('/'.join([folder, params['queryName'] + '-' + str(datetime.datetime.now()).replace(':', '-') + '.txt']), 'wb')
     print(params['queryName'] + '\n\nPast 10 days Tweets')
 
     while True:
@@ -72,7 +72,7 @@ def search_tweets(twapi, params):
     while iteration > 0:
         iteration -= 1
         # output = open(os.path.join(folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt'), 'wb')
-        output = open('/'.join([folder, params['queryName'] + '-' + str(datetime.datetime.now()) + '.txt']), 'wb')
+        output = open('/'.join([folder, params['queryName'] + '-' + str(datetime.datetime.now()).replace(':', '-') + '.txt']), 'wb')
         try:
             new_tweets = twapi.search(q=query,
                                       count=100,
