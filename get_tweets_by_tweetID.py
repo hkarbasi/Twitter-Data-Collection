@@ -55,8 +55,10 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
     """
     # process IDs from the file
 
-    output_folder = os.path.join(params['outputFolder'], params['queryName'])
-    folders = [os.path.join(output_folder, 'JSONs'), os.path.join(output_folder, 'Tweets')]
+    # output_folder = os.path.join(params['outputFolder'], params['queryName'])
+    # folders = [os.path.join(output_folder, 'JSONs'), os.path.join(output_folder, 'Tweets')]
+    output_folder = '/'.join([params['outputFolder'], params['queryName']])
+    folders = ['/'.join([output_folder, 'JSONs']), '/'.join([output_folder, 'Tweets'])]
 
     for folder in folders:
         now = datetime.datetime.now()
@@ -71,7 +73,8 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
 
     with open(tweetids_file, 'rU') as idfile:
         now = str(datetime.datetime.now()).replace(':', '-')
-        directory = os.path.join(output_folder, 'JSONs', params['queryName'] + '-recollection-')
+        # directory = os.path.join(output_folder, 'JSONs', params['queryName'] + '-recollection-')
+        directory = '/'.join([output_folder, 'JSONs', params['queryName'] + '-recollection-'])
         write_to = open(directory + 'JSONs-' + now + '.txt', 'wb')
         exception = open(directory + 'exception-' + now + '.txt', 'wb')
         count = 0
