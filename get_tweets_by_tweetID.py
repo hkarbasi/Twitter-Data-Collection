@@ -61,9 +61,9 @@ def get_tweets_by_tweetID(twapi, params, tweetids_file):
     folders = ['/'.join([output_folder, 'JSONs']), '/'.join([output_folder, 'Tweets'])]
 
     for folder in folders:
-        now = datetime.datetime.now()
+        now = str(datetime.datetime.now()).replace(':', '-')
         if os.path.exists(folder):
-            os.rename(folder, folder + '-' + str(now))
+            os.rename(folder, folder + '-' + now)
 
     try:
         os.makedirs(folders[0])
